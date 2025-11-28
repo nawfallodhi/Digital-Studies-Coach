@@ -33,7 +33,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-right">
-                /Put something here later/
+                /Empty space/
             </div>
         </nav>
     );

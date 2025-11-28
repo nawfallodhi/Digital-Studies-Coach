@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { MathJax } from "better-react-mathjax";
+import Markdown from "react-markdown";
 
 export default function AIChat() {
   const [question, setQuestion] = useState("");
@@ -50,9 +51,9 @@ export default function AIChat() {
       {answer && (
         <div className="answer-box">
           <strong>Answer:</strong>
-          <MathJax>
-            <p>{answer}</p>
-          </MathJax>
+            <MathJax>
+              {answer}
+            </MathJax>
         </div>
       )}
     </div>
