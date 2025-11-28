@@ -1,35 +1,39 @@
-import React from "react";
 import './Navbar.css'
+import { Link } from "react-router";
 
 const Navbar = () => {
     return(
         <nav className="navbar">
             <div className="navbar-left">
-                <a href="/" className="logo">
-                    Digital Studies Coach
-                </a>
+                <Link to="/">Digital Studies Coach</Link>
             </div>
             <div className="navbar-center">
                 <ul className="nav-links">
                     <li>
-                        <a href="/tools">Tools</a>
+                        <Link to="/discuss">Concept Reinforcer</Link>
                     </li>
                     <li>
-                        <a href="/about">About Us</a>
+                        <Link to="/history">Request History</Link>
                     </li>
                     <li>
-                        <a href="/contact">Contact</a>
+                        <Link to="/courses">Courses</Link>
+                    </li>
+                    <li>
+                        <Link to="/flashcards">Flashcards</Link>
+                    </li>
+                    <li>
+                        <Link to="/tools">Practice Tests</Link>
+                    </li>
+                    <li>
+                        <Link to="/contact">Contact</Link>
+                    </li>
+                    <li>
+                        <Link to="/about">About Us</Link>
                     </li>
                 </ul>
             </div>
             <div className="navbar-right">
-                <a href="/cart" className="cart-icon">
-                    <i className="fas fa-shopping-cart"></i>
-                    <span className="cart-count">0</span>
-                </a>
-                <a href="/account" className="user-icon">
-                    <i className="fas fa-user"></i>
-                </a>
+                /Put something here later/
             </div>
         </nav>
     );

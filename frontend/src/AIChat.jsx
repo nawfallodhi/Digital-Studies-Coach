@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { MathJax } from "better-react-mathjax";
 
 export default function AIChat() {
   const [question, setQuestion] = useState("");
@@ -35,7 +36,7 @@ export default function AIChat() {
 
   return (
     <div className="ai-chat-container">
-      <h2>AI Tutor</h2>
+      <h2>Explain a concept to me!</h2>
       <textarea
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
@@ -49,7 +50,9 @@ export default function AIChat() {
       {answer && (
         <div className="answer-box">
           <strong>Answer:</strong>
-          <p>{answer}</p>
+          <MathJax>
+            <p>{answer}</p>
+          </MathJax>
         </div>
       )}
     </div>
