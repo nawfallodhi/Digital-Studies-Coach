@@ -22,7 +22,7 @@ const Navbar = () => {
                         <Link to="/flashcards">Flashcards</Link>
                     </li>
                     <li>
-                        <Link to="/tools">Practice Tests</Link>
+                        <Link to="/quizes">Practice Tests</Link>
                     </li>
                     <li>
                         <Link to="/contact">Contact</Link>
@@ -33,7 +33,8 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-right">
-                /Empty space/
+                <Link to="/register">Register</Link>
+                <Link to="/login">Login</Link>
             </div>
         </nav>
     );

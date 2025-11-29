@@ -9,7 +9,19 @@ export default function History() {
   useEffect(() => {
     async function loadHistory() {
       try {
-        const res = await fetch("http://localhost:8000/ai/history");
+        const token = localStorage.getItem("token");
+        
+        const res = await fetch("http://localhost:8000/ai/history",{
+          headers:{
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if(!res.ok){
+          console.error("Unauthorized or failed:",res.status)
+        }
+
         const data = await res.json();
         setHistory(data);
       } catch (err) {
