@@ -9,7 +9,8 @@ import Courses from "./pages/courses"
 import Contact from "./pages/contact"
 
 import { MathJaxContext } from "better-react-mathjax";
-import { Routes, Route, Link } from "react-router";
+import { Routes, Route} from "react-router";
+import "katex/dist/katex.min.css";
 
 function App() {
   return (

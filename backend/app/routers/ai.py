@@ -33,8 +33,20 @@ def generate_response(request: AIRequest, db: Session = Depends(get_db)):
     response = client.chat.completions.create(
         model="x-ai/grok-4.1-fast:free",
         messages=[
-            {"role": "user", "content": user_input},
-            {"role": "system", "content": "You are an AI tutor. If MATH related prompt format in Latex style."}
+            {   "role": "system", 
+                "content": (
+                    "You are an AI tutor."
+                    "When producing math, ALWAYS use proper LaTeX delimiters: "
+                    "• Inline math → $ ... $ "
+                    "• Block math → $$ ... $$ "
+                    "Never write mathematical expressions inside parentheses like ( a ) or ( a \mid b ). "
+                    "Always convert them to LaTeX: $a$, $a \mid b$, etc."
+                    "You may freely use Markdown for formatting (**, lists, headings, etc)."
+                    "Math must stay inside $...$ or $$...$$ so the frontend can render correctly. "
+                    "Don't include any policies, a revision of the prompt or any of your own thoughts/anaylysis. just answer the prompt"
+                )
+            },
+            {"role": "user", "content": user_input}
         ]
     )
     ai_text = response.choices[0].message.content

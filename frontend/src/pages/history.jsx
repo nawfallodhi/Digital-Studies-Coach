@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { MarkdownAsync } from "react-markdown";
+import "../styles/history.css"
+import RichText from "../math_format";
 
 export default function History() {
   const [history, setHistory] = useState([]);
@@ -21,33 +22,25 @@ export default function History() {
     loadHistory();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="loading-text">Loading...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="history-container">
       <h1>API Request History</h1>
       <hr />
 
       {history.length === 0 ? (
-        <p>No history yet.</p>
+        <p className="empty-text">No history yet.</p>
       ) : (
-        <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+        <ul className="history-list">
           {history.map((item) => (
-            <li
-              key={item.id}
-              style={{
-                background: "#f1f1f1",
-                padding: "15px",
-                borderRadius: "8px",
-                marginBottom: "10px",
-              }}
-            >
-              <p><strong>Topic:</strong> {item.topic}</p>
-              <p><strong>Prompt:</strong> {item.question}</p>
-              <p><strong>Response:</strong>{item.answer}</p>
-              <p style={{ fontSize: "12px", color: "#666" }}>
+            <li key={item.id} className="history-item">
+              <div className="topic"><strong>Topic:</strong><RichText>{item.topic}</RichText></div>
+              <div className="prompt"><strong>Prompt:</strong><RichText>{item.question}</RichText></div>
+              <div className="response"><strong>Response:</strong><RichText>{item.answer}</RichText></div>
+              <div className="timestamp">
                 {new Date(item.createdAt).toLocaleString()}
-              </p>
+              </div>
             </li>
           ))}
         </ul>
