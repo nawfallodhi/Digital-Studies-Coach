@@ -6,7 +6,6 @@ import About from "./pages/about";
 import History from "./pages/history"
 import Flash from "./pages/flashcards"
 import Courses from "./pages/courses"
-import Contact from "./pages/contact"
 import Login from "./pages/login";
 import Register from "./pages/register";
 
@@ -17,7 +16,6 @@ import "katex/dist/katex.min.css";
 function App() {
   return (
     <div>
-      <MathJaxContext>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home/>}/>
@@ -26,12 +24,10 @@ function App() {
           <Route path="/history" element={<History/>}/>
           <Route path="/flashcards" element={<Flash/>}/>
           <Route path="/courses" element={<Courses/>}/>
-          <Route path="/contact" element={<Contact/>}/>
           <Route path="/discuss" element={<AIChat/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>
         </Routes>
-      </MathJaxContext>
     </div>
   );
 }

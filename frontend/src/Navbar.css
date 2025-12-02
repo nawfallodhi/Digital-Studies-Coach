@@ -63,3 +63,17 @@
   background-color: #f3f4f6;
   color: #4f46e5;
 }
+
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: white;      /* match your navbar text color */
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 8px 12px;
+}
+
+.logout-btn:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}

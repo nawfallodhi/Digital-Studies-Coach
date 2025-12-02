@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {Link} from "react-router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export default function Login() {
       }
 
       // Save JWT token
-      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("token", data.token);
 
       // Redirect to homepage
       window.location.href = "/";
@@ -63,6 +64,9 @@ export default function Login() {
           Login
         </button>
       </form>
+      <div style={{marginTop: "15px"}}>
+        <Link to="/register">Register below if you havent!</Link>
+      </div>
     </div>
   );
 }

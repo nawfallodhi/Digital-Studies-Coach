@@ -1,7 +1,16 @@
 import './Navbar.css'
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Navbar = () => {
+
+    const isLoggedIn = !!localStorage.getItem("token");
+    let navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
     return(
         <nav className="navbar">
             <div className="navbar-left">
@@ -25,16 +34,12 @@ const Navbar = () => {
                         <Link to="/quizes">Practice Tests</Link>
                     </li>
                     <li>
-                        <Link to="/contact">Contact</Link>
-                    </li>
-                    <li>
-                        <Link to="/about">About Us</Link>
+                        <Link to="/about">About</Link>
                     </li>
                 </ul>
             </div>
             <div className="navbar-right">
-                <Link to="/register">Register</Link>
-                <Link to="/login">Login</Link>
+                {isLoggedIn ? (<button onClick={handleLogout} className='logout-btn'>Sign Out</button>): (<Link to="/login">Login</Link>)}
             </div>
         </nav>
     );
