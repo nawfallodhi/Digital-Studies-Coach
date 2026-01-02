@@ -3,13 +3,19 @@ import { Link, useNavigate } from "react-router";
 
 const Navbar = () => {
 
-    const isLoggedIn = !!localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    const isLoggedIn = !!token;
     let navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/login");
     };
+
+    if(!token) {
+        navigate("/login");
+        return null; 
+    }
 
     return(
         <nav className="navbar">
@@ -39,7 +45,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-right">
-                {isLoggedIn ? (<button onClick={handleLogout} className='logout-btn'>Sign Out</button>): (<Link to="/login">Login</Link>)}
+                {isLoggedIn ? (<button onClick={handleLogout} className='logout-btn'>Sign Out</button>): (<Link to="/login">Login</Link>)};  
             </div>
         </nav>
     );

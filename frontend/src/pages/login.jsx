@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {Link} from "react-router";
+import "../styles/login.css"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,10 +25,8 @@ export default function Login() {
         return;
       }
 
-      // Save JWT token
       localStorage.setItem("token", data.token);
 
-      // Redirect to homepage
       window.location.href = "/";
     } catch (err) {
       setError("Server error");
@@ -35,11 +34,11 @@ export default function Login() {
   }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="login-container">
       <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label><br />
+      <form className="login-form" onSubmit={handleLogin}>
+        <div className="form-group">
+          <label>Email:</label>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -48,8 +47,8 @@ export default function Login() {
           />
         </div>
 
-        <div style={{ marginTop: "10px" }}>
-          <label>Password:</label><br />
+        <div className="form-group">
+          <label>Password:</label>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -58,14 +57,15 @@ export default function Login() {
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="error-message">{error}</p>}
 
-        <button style={{ marginTop: "20px" }} type="submit">
+        <button className="login-button" type="submit">
           Login
         </button>
       </form>
-      <div style={{marginTop: "15px"}}>
-        <Link to="/register">Register below if you havent!</Link>
+      
+      <div className="register-link">
+        <Link to="/register">Register here if you haven't!</Link>
       </div>
     </div>
   );

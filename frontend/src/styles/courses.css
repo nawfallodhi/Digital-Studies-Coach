@@ -1,0 +1,129 @@
+/* ---------- COURSES CONTAINER ---------- */
+.courses-container {
+  max-width: 650px;
+  margin: 3.5rem auto;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  animation: slideUp 0.6s ease;
+}
+
+.courses-container h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.5rem 0;
+}
+
+/* ---------- INPUT FIELDS ---------- */
+.courses-container input,
+.courses-container textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #f9fafb;
+  transition: 0.25s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.courses-container input:focus,
+.courses-container textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.3);
+  outline: none;
+  background: #ffffff;
+}
+
+.courses-container textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ---------- BUTTON ---------- */
+.courses-container button {
+  align-self: center;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.courses-container button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+}
+
+.courses-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- COURSE PLAN OUTPUT ---------- */
+.course-plan-output {
+  margin-top: 1rem;
+}
+
+.course-plan-output h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4f46e5;
+  margin: 0 0 1rem 0;
+  text-align: left;
+}
+
+.course-plan-output pre {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1.3rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #f8fafc;
+  text-align: left;
+  line-height: 1.6;
+  color: #1f2937;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* Smooth scrolling for course plan */
+.course-plan-output pre::-webkit-scrollbar {
+  width: 8px;
+}
+
+.course-plan-output pre::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 10px;
+}
+
+/* ---------- ANIMATION ---------- */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

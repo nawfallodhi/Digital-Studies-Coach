@@ -7,7 +7,9 @@ from app.database.models import RequestHistory, User
 from app.database.database import SessionLocal
 from app.routers.auth import get_current_user
 import os
-import openai 
+import openai
+import json 
+import re
 
 load_dotenv()
 client = openai.OpenAI(
@@ -28,6 +30,48 @@ def get_db():
     finally:
         db.close()
 
+def repair_and_extract_json(text: str) -> dict:
+    """Extract and repair JSON object from AI response"""
+    try:
+        # Remove markdown code blocks
+        text = re.sub(r'```json\s*', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'```\s*', '', text)
+        
+        # Find JSON object boundaries
+        start = text.find('{')
+        end = text.rfind('}')
+        
+        if start == -1 or end == -1:
+            raise ValueError("No JSON object found in response")
+        
+        json_str = text[start:end+1]
+        
+        # Fix common JSON errors from AI:
+        # 1. Fix: "C) $\\frac{1}{3}$, "D) -> "C) $\\frac{1}{3}$", "D)
+        json_str = re.sub(r'(\$[^"]*),(\s*"[A-D]\))', r'\1",\2', json_str)
+        
+        # 2. Fix any remaining quote-comma-quote issues
+        json_str = re.sub(r'",\s*"', '", "', json_str)
+        
+        print("=== REPAIRED JSON ===")
+        print(json_str[:500])  # Print first 500 chars for debugging
+        print("=== END ===")
+        
+        # Try to parse
+        quiz_data = json.loads(json_str)
+        
+        # Validate structure
+        if 'questions' not in quiz_data or not isinstance(quiz_data['questions'], list):
+            raise ValueError("Invalid quiz structure")
+        
+        return quiz_data
+        
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error at position {e.pos}: {e.msg}")
+        if e.pos < len(json_str):
+            print(f"Near: ...{json_str[max(0, e.pos-50):e.pos+50]}...")
+        raise ValueError(f"Invalid JSON: {str(e)}")
+
 @router.post("/generate")
 def generate_response(request: AIRequest, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     print("User input:", request.question)
@@ -36,26 +80,51 @@ def generate_response(request: AIRequest, db: Session = Depends(get_db), current
     
     user_input = request.question
     try:
+        if request.topic == "quiz_generator":
+            system_content = (
+                "You are a quiz generator AI. "
+            "You MUST respond with ONLY a valid JSON object - no other text, no explanations, no markdown code blocks. "
+            "For mathematical expressions, use LaTeX with $ delimiters (e.g., $x^2$, $\\frac{a}{b}$). "
+            "CRITICAL: In JSON strings, backslashes must be escaped. Use \\\\frac NOT \\frac, \\\\int NOT \\int, etc. "
+            "Your response should be parseable by JSON.parse() with no modifications. "
+            "Start your response with { and end with } - nothing else."
+            )
+        else:
+            system_content = (
+                "You are an AI tutor."
+                "When producing math, ALWAYS use proper LaTeX delimiters: "
+                "• Inline math → $ ... $ "
+                "• Block math → $$ ... $$ "
+                "Never write mathematical expressions inside parentheses like ( a ) or ( a \mid b ). "
+                "Always convert them to LaTeX: $a$, $a \mid b$, etc."
+                "You may freely use Markdown for formatting (**, lists, headings, etc)."
+                "Math must stay inside $...$ or $$...$$ so the frontend can render correctly. "
+                "Don't include any policies, a revision of the prompt or any of your own thoughts/anaylysis. just answer the prompt"
+            )
+
         response = client.chat.completions.create(
-            model="x-ai/grok-4.1-fast:free",
+            model="meta-llama/llama-3.3-70b-instruct:free",
             messages=[
                 {   "role": "system", 
-                    "content": (
-                        "You are an AI tutor."
-                        "When producing math, ALWAYS use proper LaTeX delimiters: "
-                        "• Inline math → $ ... $ "
-                        "• Block math → $$ ... $$ "
-                        "Never write mathematical expressions inside parentheses like ( a ) or ( a \mid b ). "
-                        "Always convert them to LaTeX: $a$, $a \mid b$, etc."
-                        "You may freely use Markdown for formatting (**, lists, headings, etc)."
-                        "Math must stay inside $...$ or $$...$$ so the frontend can render correctly. "
-                        "Don't include any policies, a revision of the prompt or any of your own thoughts/anaylysis. just answer the prompt"
-                    )
+                    "content": system_content
                 },
                 {"role": "user", "content": user_input}
             ]
         )
         ai_text = response.choices[0].message.content
+
+        if request.topic == "quiz_generator":
+            try:
+                quiz_data = repair_and_extract_json(ai_text)
+                # Return the cleaned JSON as a string
+                ai_text = json.dumps(quiz_data)
+                print("✓ Successfully parsed and repaired quiz JSON")
+            except ValueError as e:
+                print(f"⚠ Warning: Could not parse quiz JSON: {e}")
+                print("Returning raw response")
+                # Return raw response as fallback
+        
+
     except Exception as e:
         print("openrouter call failed",e)
         raise e
