@@ -83,11 +83,21 @@ def generate_response(request: AIRequest, db: Session = Depends(get_db), current
         if request.topic == "quiz_generator":
             system_content = (
                 "You are a quiz generator AI. "
-            "You MUST respond with ONLY a valid JSON object - no other text, no explanations, no markdown code blocks. "
-            "For mathematical expressions, use LaTeX with $ delimiters (e.g., $x^2$, $\\frac{a}{b}$). "
-            "CRITICAL: In JSON strings, backslashes must be escaped. Use \\\\frac NOT \\frac, \\\\int NOT \\int, etc. "
-            "Your response should be parseable by JSON.parse() with no modifications. "
-            "Start your response with { and end with } - nothing else."
+                "You MUST respond with ONLY a valid JSON object - no other text, no explanations, no markdown code blocks. "
+                "For mathematical expressions, use LaTeX with $ delimiters (e.g., $x^2$, $\\frac{a}{b}$). "
+                "CRITICAL: In JSON strings, backslashes must be escaped. Use \\\\frac NOT \\frac, \\\\int NOT \\int, etc. "
+                "Your response should be parseable by JSON.parse() with no modifications. "
+                "Start your response with { and end with } - nothing else."
+            )
+        elif request.topic == "flashcard_generator":
+            system_content = (
+                "You are a flashcard generator AI. "
+                "You MUST respond with ONLY a valid JSON object - no other text. "
+                "\n\nCRITICAL JSON FORMATTING RULES:\n"
+                "1. Use double backslashes in LaTeX: \\\\frac NOT \\frac\n"
+                "2. All strings must be properly quoted\n"
+                "3. No trailing commas\n"
+                "\nFor math, use LaTeX with $ delimiters inside properly quoted strings."
             )
         else:
             system_content = (
@@ -113,7 +123,7 @@ def generate_response(request: AIRequest, db: Session = Depends(get_db), current
         )
         ai_text = response.choices[0].message.content
 
-        if request.topic == "quiz_generator":
+        if request.topic in ["quiz_generator","flashcard_generator"]:
             try:
                 quiz_data = repair_and_extract_json(ai_text)
                 # Return the cleaned JSON as a string
