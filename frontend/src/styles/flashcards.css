@@ -191,11 +191,11 @@
 /* Navigation Controls */
 .navigation-controls {
   display: flex;
-  justify-content: center;
+  justify-content: middle;
   gap: 15px;
 }
 
-.nav-btn,
+.nav-btn,.nav-btn-2,
 .flip-btn {
   padding: 12px 24px;
   font-size: 16px;
@@ -209,6 +209,17 @@
 .nav-btn {
   background: #2196F3;
   color: white;
+  position: absolute;
+  left: 105px;
+  bottom: 222.5px;
+}
+
+.nav-btn-2 {
+  background: #2196F3;
+  color: white;
+  position: absolute;
+  left: 125px;
+  bottom: 325px;
 }
 
 .nav-btn:hover:not(:disabled) {
@@ -225,6 +236,9 @@
 .flip-btn {
   background: #4CAF50;
   color: white;
+  position: relative;
+  right:240px;
+  bottom: 220px;
 }
 
 .flip-btn:hover {

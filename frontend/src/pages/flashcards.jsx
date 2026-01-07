@@ -245,7 +245,7 @@ Requirements:
             <button
               onClick={handleNext}
               disabled={currentIndex === flashcards.flashcards.length - 1}
-              className="nav-btn"
+              className="nav-btn-2"
             >
               Next →
             </button>
