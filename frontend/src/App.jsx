@@ -9,9 +9,13 @@ import Courses from "./pages/courses"
 import Login from "./pages/login";
 import Register from "./pages/register";
 
-import { MathJaxContext } from "better-react-mathjax";
-import { Routes, Route} from "react-router";
+import { Routes, Route, Navigate} from "react-router";
 import "katex/dist/katex.min.css";
+
+const ProtectedRoute = ({children}) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/login" replace />
+};
 
 function App() {
   return (
@@ -21,7 +25,7 @@ function App() {
           <Route path="/" element={<Home/>}/>
           <Route path="/quizes" element={<Quizes/>}/>
           <Route path="/about" element={<About/>}/>
-          <Route path="/history" element={<History/>}/>
+          <Route path="/history" element={<ProtectedRoute><History/></ProtectedRoute>}/>
           <Route path="/flashcards" element={<Flash/>}/>
           <Route path="/courses" element={<Courses/>}/>
           <Route path="/discuss" element={<AIChat/>}/>

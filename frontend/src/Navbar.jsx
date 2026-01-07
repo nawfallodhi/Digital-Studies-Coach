@@ -1,21 +1,21 @@
 import './Navbar.css'
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate,} from "react-router";
 
 const Navbar = () => {
 
     const token = localStorage.getItem("token");
     const isLoggedIn = !!token;
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/login");
     };
 
-    if(!token) {
-        navigate("/login");
-        return null; 
-    }
+    // if(!token) {
+    //     navigate("/login");
+    //     return null; 
+    // }
 
     return(
         <nav className="navbar">
